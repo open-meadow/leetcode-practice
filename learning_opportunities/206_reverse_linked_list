@@ -1,0 +1,49 @@
+// Link: https://leetcode.com/problems/reverse-linked-list/description/
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+
+var reverseList = function (head) {
+  let current = head;
+  let prev = null;
+  let next = null;
+
+  while (current !== null) {
+    // current.next refers to the next node in the linked list. it is not referencing the variable 'next'
+    next = current.next;
+
+    // this makes current go from [1, 2, 3, 4, 5] to [1], because it is now [1, null]
+    current.next = prev;
+    prev = current;
+    
+    current = next;
+  }
+  head = prev;
+  return head;
+};
+
+const reverseListRecursive = (head) => {
+  if (head === null || head.next === null) {
+    return head;
+  }
+
+  let reversedHead = reverseListRecursive(head.next);
+
+  // if the head here is [4,5], this makes it so that 5 points to 4. Remember, this is a linked list, not an array
+  head.next.next = head;
+
+  // here, 4 points to null
+  head.next = null;
+
+  // reversedHead is not a copy of head, it is a reference to head. Therefore, any changes made to 'head' will also affect reversedHead
+  return reversedHead;
+};
